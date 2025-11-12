@@ -7,3 +7,8 @@ data class WikiLocalization(
     val longitude: Double,
     val url: String?
 )
+
+data class GeoCoordinates(
+    val latitude: Double,
+    val longitude: Double
+)
