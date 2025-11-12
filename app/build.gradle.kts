@@ -54,6 +54,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.runtime.livedata)
 
     //retrofit
     implementation(libs.retrofit)
@@ -64,15 +65,20 @@ dependencies {
     //coil
     implementation(libs.coil)
 
-    //
+    //koin
     ksp(libs.koin.ksp)
     implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.android)
     implementation(libs.koin.annotations)
 
+    //room
     ksp(libs.room.ksp)
     implementation(libs.room.runtime)
     implementation(libs.room.coroutines)
+
+    //gps
+    implementation(libs.play.services.location)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
