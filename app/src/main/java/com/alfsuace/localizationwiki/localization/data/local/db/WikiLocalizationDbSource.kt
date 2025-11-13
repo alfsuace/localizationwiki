@@ -1,7 +1,7 @@
 package com.alfsuace.localizationwiki.localization.data.local.db
 
 import com.alfsuace.localizationwiki.app.domain.ErrorApp
-import com.alfsuace.localizationwiki.localization.di.TIME_CACHE
+import com.alfsuace.localizationwiki.app.domain.TIME_CACHE
 import com.alfsuace.localizationwiki.localization.domain.WikiLocalization
 import org.koin.core.annotation.Single
 
