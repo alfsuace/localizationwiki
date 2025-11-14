@@ -56,7 +56,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.runtime.livedata)
-
+    implementation(libs.androidx.compose.runtime.saveable)
     implementation(libs.kotlinx.coroutines.play.services)
 
     //retrofit
@@ -67,6 +67,7 @@ dependencies {
 
     //coil
     implementation(libs.coil)
+    implementation(libs.coil.compose)
 
     //Datastore
     implementation(libs.androidx.datastore.preferences)
