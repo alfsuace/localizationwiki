@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -56,6 +57,8 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.runtime.livedata)
 
+    implementation(libs.kotlinx.coroutines.play.services)
+
     //retrofit
     implementation(libs.retrofit)
     implementation(libs.okhttp.log.interceptor)
@@ -64,6 +67,12 @@ dependencies {
 
     //coil
     implementation(libs.coil)
+
+    //Datastore
+    implementation(libs.androidx.datastore.preferences)
+
+    //Json
+    implementation(libs.kotlinx.serialization.json)
 
     //koin
     ksp(libs.koin.ksp)
