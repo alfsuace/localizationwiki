@@ -10,7 +10,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.Inet4Address
 import java.net.InetAddress
-import java.util.concurrent.TimeUnit
 
 @Module
 class RemoteModule {

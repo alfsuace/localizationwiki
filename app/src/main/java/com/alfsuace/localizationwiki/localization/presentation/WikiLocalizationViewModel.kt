@@ -3,6 +3,7 @@ package com.alfsuace.localizationwiki.localization.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alfsuace.localizationwiki.app.domain.ErrorApp
+import com.alfsuace.localizationwiki.app.domain.TIME_CACHE
 import com.alfsuace.localizationwiki.localization.domain.GeoCoordinates
 import com.alfsuace.localizationwiki.localization.domain.GetCoordinatesUseCase
 import com.alfsuace.localizationwiki.localization.domain.GetLocationUseCase
@@ -48,16 +49,44 @@ class WikiLocalizationViewModel(
         }
     }
 
-    fun getCoordinatesWithLocation() {
+    fun updatePermissionStatus(granted: Boolean, showSettingsOnDenial: Boolean) {
+        _uiState.update { it.copy(hasLocationPermission = granted) }
+        if (granted) {
+            fetchCoordinatesAndWikis()
+        } else if (showSettingsOnDenial) {
+            _uiState.update { it.copy(showGoToSettings = true) }
+        }
+    }
+
+    fun fetchCoordinatesAndWikis() {
         _uiState.update { it.copy(isLoading = true, error = null) }
+        viewModelScope.launch(Dispatchers.IO) {
+            val cachedResult = getCoordinatesUseCase.invoke()
+            cachedResult.fold(
+                onSuccess = { cachedCoords ->
+                    val isCacheStale =
+                        System.currentTimeMillis() - cachedCoords.timeStamp > TIME_CACHE
+
+                    if (isCacheStale) {
+                        getLocationFromGps()
+                    } else {
+                        useCachedCoordsAndLoadWikis(cachedCoords)
+                    }
+                },
+                onFailure = {
+                    getLocationFromGps()
+                }
+            )
+        }
+    }
+
+    private fun getLocationFromGps() {
         viewModelScope.launch(Dispatchers.IO) {
             val result = getLocationUseCase.invoke()
             result.fold(
                 onSuccess = { newGeoCoordinates ->
-                    _uiState.update { uiState ->
-                        uiState.copy(isLoading = false, coords = newGeoCoordinates)
-                    }
                     saveGeoCoordinates(newGeoCoordinates)
+                    getNearbyWikis(newGeoCoordinates)
                 },
                 onFailure = { newError ->
                     _uiState.update { uiState ->
@@ -68,24 +97,10 @@ class WikiLocalizationViewModel(
         }
     }
 
-    fun getCoordinates() {
-        _uiState.update { it.copy(isLoading = true, error = null) }
-        viewModelScope.launch(Dispatchers.IO) {
-            val result = getCoordinatesUseCase.invoke()
-            result.fold(
-                onSuccess = { newGeoCoordinates ->
-                    _uiState.update { uiState ->
-                        uiState.copy(isLoading = false, coords = newGeoCoordinates)
-                    }
-                },
-                onFailure = { newError ->
-                    _uiState.update { uiState ->
-                        uiState.copy(isLoading = false, error = newError as ErrorApp?)
-                    }
-                }
-            )
-        }
+    private fun useCachedCoordsAndLoadWikis(cachedCoords: GeoCoordinates) {
+        getNearbyWikis(cachedCoords)
     }
+
 
     fun saveGeoCoordinates(geoCoordinates: GeoCoordinates) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -93,11 +108,13 @@ class WikiLocalizationViewModel(
         }
     }
 
-
     data class WikiLocalizationUiState(
+        val hasLocationPermission: Boolean = false,
+        val showGoToSettings: Boolean = false,
         val wikis: List<WikiLocalization> = emptyList(),
         val isLoading: Boolean = false,
         val coords: GeoCoordinates? = null,
         val error: ErrorApp? = null,
     )
+
 }
