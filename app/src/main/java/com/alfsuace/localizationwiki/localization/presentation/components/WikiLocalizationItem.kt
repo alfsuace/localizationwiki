@@ -22,8 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import coil.imageLoader
 import com.alfsuace.localizationwiki.localization.domain.GeoCoordinates
 import com.alfsuace.localizationwiki.localization.domain.WikiLocalization
 
@@ -33,6 +35,8 @@ fun WikiLocalizationItem(
     userCoords: GeoCoordinates?,
     onClick: () -> Unit
 ) {
+    val imageLoader = LocalContext.current.imageLoader
+
     val distance = remember(userCoords) {
         userCoords?.let {
             FloatArray(1).apply {
@@ -60,6 +64,7 @@ fun WikiLocalizationItem(
             if (wiki.imageUrl != null) {
                 AsyncImage(
                     model = wiki.imageUrl,
+                    imageLoader = imageLoader,
                     contentDescription = wiki.title,
                     modifier = Modifier
                         .size(64.dp)
