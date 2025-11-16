@@ -12,6 +12,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.collectAsState
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import com.alfsuace.localizationwiki.localization.presentation.WikiLocalizationScreen
 import com.alfsuace.localizationwiki.localization.presentation.WikiLocalizationViewModel
 import com.alfsuace.localizationwiki.ui.theme.LocalizationwikiTheme
@@ -38,7 +39,7 @@ class MainActivity : ComponentActivity() {
                         requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
                     },
                     onOpenUrl = { url ->
-                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
                         startActivity(intent)
                     },
                     onOpenSettings = { openAppSettings() },
