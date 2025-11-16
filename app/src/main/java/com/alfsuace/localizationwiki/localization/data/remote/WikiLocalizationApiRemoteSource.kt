@@ -9,7 +9,10 @@ class WikiLocalizationApiRemoteSource(
     private val service: WikiApiService
 ) {
 
-    suspend fun getNearbyWikiLocalizations(lat: Double, lon: Double): Result<List<WikiLocalization>> {
+    suspend fun getNearbyWikiLocalizations(
+        lat: Double,
+        lon: Double
+    ): Result<List<WikiLocalization>> {
         return apiCall {
             service.getNearbyArticles(ggscoord = "$lat|$lon")
         }.mapCatching { response ->

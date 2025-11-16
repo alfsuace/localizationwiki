@@ -30,10 +30,10 @@ class GeoCoordinatesLocalDataSource(
                 val coordinates = json.decodeFromString<GeoCoordinates>(geoJson)
                 Result.success(coordinates)
             } else {
-                Result.failure(ErrorApp.DataErrorApp)
+                Result.failure(ErrorApp.DataErrorApp())
             }
         } catch (e: Exception) {
-            Result.failure(ErrorApp.UnknownErrorApp)
+            Result.failure(ErrorApp.UnknownErrorApp())
         }
     }
 

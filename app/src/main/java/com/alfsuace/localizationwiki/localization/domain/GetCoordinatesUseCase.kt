@@ -18,7 +18,7 @@ class GetCoordinatesUseCase(private val geoCoordinatesRepository: GeoCoordinates
         val now = System.currentTimeMillis()
 
         return if (now - coords.timeStamp > TIME_CACHE) {
-            Result.failure(ErrorApp.CacheExpiredErrorApp)
+            Result.failure(ErrorApp.CacheExpiredErrorApp())
         } else {
             Result.success(coords)
         }

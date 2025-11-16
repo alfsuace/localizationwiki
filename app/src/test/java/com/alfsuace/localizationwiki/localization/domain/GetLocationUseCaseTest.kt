@@ -40,14 +40,14 @@ class GetLocationUseCaseTest {
     @Test
     fun `Return location failure return unknown error`() = runTest {
         //given
-        coEvery { locationRepository.getCurrentLocation() } returns Result.failure(ErrorApp.UnknownErrorApp)
+        coEvery { locationRepository.getCurrentLocation() } returns Result.failure(ErrorApp.UnknownErrorApp())
 
         //when
         val coords = getLocationUseCase.invoke()
 
         //then
         coVerify { locationRepository.getCurrentLocation() }
-        assertEquals(ErrorApp.UnknownErrorApp, coords.exceptionOrNull())
+        assertEquals(ErrorApp.UnknownErrorApp(), coords.exceptionOrNull())
     }
 
 }

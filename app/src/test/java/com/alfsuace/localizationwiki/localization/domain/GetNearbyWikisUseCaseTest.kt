@@ -50,7 +50,7 @@ class GetNearbyWikisUseCaseTest {
         //given
         val currentTime = System.currentTimeMillis()
         val mockCoords = GeoCoordinates(2.0, 3.0, currentTime)
-        val mockError = ErrorApp.UnknownErrorApp
+        val mockError = ErrorApp.UnknownErrorApp()
         coEvery { wikiLocalizationRepository.getNearbyWikis(any(), any()) } returns Result.failure(
             mockError
         )

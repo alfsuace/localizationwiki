@@ -26,27 +26,27 @@ class GetCoordinatesUseCaseTest {
     @Test
     fun `gets null and should return unknown error`() = runTest {
         //given
-        coEvery { geoCoordinatesRepository.getCoordinates() } returns Result.failure(ErrorApp.UnknownErrorApp)
+        coEvery { geoCoordinatesRepository.getCoordinates() } returns Result.failure(ErrorApp.UnknownErrorApp())
 
         //when
         val coords = getCoordinatesUseCase.invoke()
 
         //then
         coVerify { geoCoordinatesRepository.getCoordinates() }
-        assertEquals(ErrorApp.UnknownErrorApp, coords.exceptionOrNull())
+        assertEquals(ErrorApp.UnknownErrorApp(), coords.exceptionOrNull())
     }
 
     @Test
     fun `gets cache expired and should return cache expired error`() = runTest {
         //given
-        coEvery { geoCoordinatesRepository.getCoordinates() } returns Result.failure(ErrorApp.CacheExpiredErrorApp)
+        coEvery { geoCoordinatesRepository.getCoordinates() } returns Result.failure(ErrorApp.CacheExpiredErrorApp())
 
         //when
         val coords = getCoordinatesUseCase.invoke()
 
         //then
         coVerify { geoCoordinatesRepository.getCoordinates() }
-        assertEquals(ErrorApp.CacheExpiredErrorApp, coords.exceptionOrNull())
+        assertEquals(ErrorApp.CacheExpiredErrorApp(), coords.exceptionOrNull())
     }
 
     @Test
