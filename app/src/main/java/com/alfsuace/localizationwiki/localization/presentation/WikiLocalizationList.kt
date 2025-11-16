@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -20,27 +22,39 @@ fun WikiLocalizationList(
     coords: GeoCoordinates?,
     wikis: List<WikiLocalization>,
     onOpenUrl: (String) -> Unit,
+    isLoading: Boolean,
+    onRefresh: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
+
+    val state = rememberPullToRefreshState()
+
+    PullToRefreshBox(
+        state = state,
         modifier = modifier
             .fillMaxSize()
-            .systemBarsPadding()
+            .systemBarsPadding(),
+        isRefreshing = isLoading,
+        onRefresh = onRefresh,
     ) {
-        WikiLocalizationHeader(coords)
-
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+        Column(
+            modifier = Modifier.fillMaxSize()
         ) {
-            items(wikis) { wiki ->
-                WikiLocalizationItem(
-                    wiki = wiki,
-                    userCoords = coords,
-                    onClick = { wiki.url?.let(onOpenUrl) }
-                )
+            WikiLocalizationHeader(coords)
+
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(wikis) { wiki ->
+                    WikiLocalizationItem(
+                        wiki = wiki,
+                        userCoords = coords,
+                        onClick = { wiki.url?.let(onOpenUrl) }
+                    )
+                }
             }
         }
     }

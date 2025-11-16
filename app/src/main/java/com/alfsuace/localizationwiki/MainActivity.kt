@@ -41,7 +41,8 @@ class MainActivity : ComponentActivity() {
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                         startActivity(intent)
                     },
-                    onOpenSettings = { openAppSettings() }
+                    onOpenSettings = { openAppSettings() },
+                    onRefresh = { viewModel.fetchCoordinatesAndWikis() }
                 )
             }
         }

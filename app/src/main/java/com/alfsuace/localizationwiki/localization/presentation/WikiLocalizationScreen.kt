@@ -10,7 +10,8 @@ fun WikiLocalizationScreen(
     uiState: WikiLocalizationViewModel.WikiLocalizationUiState,
     onRequestPermission: () -> Unit,
     onOpenUrl: (String) -> Unit,
-    onOpenSettings: () -> Unit
+    onOpenSettings: () -> Unit,
+    onRefresh: () -> Unit
 ) {
     when {
         !uiState.hasLocationPermission -> PermissionUI(
@@ -26,7 +27,9 @@ fun WikiLocalizationScreen(
         else -> WikiLocalizationList(
             coords = uiState.coords,
             wikis = uiState.wikis,
-            onOpenUrl = onOpenUrl
+            onOpenUrl = onOpenUrl,
+            isLoading = uiState.isLoading,
+            onRefresh = onRefresh
         )
     }
 }
