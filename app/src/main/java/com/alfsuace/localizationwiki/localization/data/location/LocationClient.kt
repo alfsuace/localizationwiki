@@ -23,7 +23,7 @@ class LocationClient(private val fusedLocationClient: FusedLocationProviderClien
 
             return Result.success(location.toGeoCoordinates())
         }.onFailure {
-            return Result.failure(ErrorApp.UnknownErrorApp)
+            return Result.failure(ErrorApp.UnknownErrorApp())
         }
     }
 

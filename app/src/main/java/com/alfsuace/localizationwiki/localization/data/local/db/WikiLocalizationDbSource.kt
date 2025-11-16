@@ -14,10 +14,10 @@ class WikiLocalizationDbSource(private val wikiLocalizationDao: WikiLocalization
             return if (isInCacheTime(wikis.first().timeStamp)) {
                 Result.success(wikis.map { it.toModel() })
             } else {
-                Result.failure(ErrorApp.CacheExpiredErrorApp)
+                Result.failure(ErrorApp.CacheExpiredErrorApp())
             }
         }
-        return Result.failure(ErrorApp.DataErrorApp)
+        return Result.failure(ErrorApp.DataErrorApp())
     }
 
     private fun isInCacheTime(date: Long): Boolean {
